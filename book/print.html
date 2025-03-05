@@ -1,0 +1,362 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>BlogWithTrae</title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">BlogWithTrae</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="欢迎来到我的博客"><a class="header" href="#欢迎来到我的博客">欢迎来到我的博客</a></h1>
+<p>欢迎来到我的个人博客！这里是我分享技术见解、生活感悟的地方。</p>
+<h2 id="关于博客"><a class="header" href="#关于博客">关于博客</a></h2>
+<p>这个博客使用 mdBook 搭建，主要包含以下内容：</p>
+<ul>
+<li>
+<p><strong>技术博客</strong>：分享编程经验和技术见解</p>
+<ul>
+<li>Rust 编程心得</li>
+<li>Web 开发实践</li>
+</ul>
+</li>
+<li>
+<p><strong>生活随笔</strong>：记录生活点滴</p>
+<ul>
+<li>读书笔记和思考</li>
+<li>旅行见闻和感悟</li>
+</ul>
+</li>
+</ul>
+<h2 id="期待与你交流"><a class="header" href="#期待与你交流">期待与你交流</a></h2>
+<p>博客内容会持续更新，欢迎经常访问。如果你有任何想法或建议，都可以通过以下方式与我交流：</p>
+<ul>
+<li>在文章下方留言</li>
+<li>通过邮件联系</li>
+</ul>
+<p>感谢你的访问！</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="技术博客"><a class="header" href="#技术博客">技术博客</a></h1>
+<p>在这个板块，我会分享我在编程和技术领域的学习心得、实践经验和思考。</p>
+<h2 id="主要内容"><a class="header" href="#主要内容">主要内容</a></h2>
+<h3 id="rust编程"><a class="header" href="#rust编程">Rust编程</a></h3>
+<p>分享Rust语言学习过程中的心得体会，包括：</p>
+<ul>
+<li>语言特性的理解和运用</li>
+<li>实际项目开发经验</li>
+<li>常见问题的解决方案</li>
+</ul>
+<h3 id="web开发"><a class="header" href="#web开发">Web开发</a></h3>
+<p>记录Web开发相关的技术探索：</p>
+<ul>
+<li>前端框架使用心得</li>
+<li>后端开发实践</li>
+<li>全栈开发经验分享</li>
+</ul>
+<h2 id="更新计划"><a class="header" href="#更新计划">更新计划</a></h2>
+<p>我会定期更新技术文章，分享最新的学习心得和项目经验。如果你对某个特定的技术主题感兴趣，也欢迎在评论区留言交流。</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="rust编程-1"><a class="header" href="#rust编程-1">Rust编程</a></h1>
+<h2 id="为什么选择rust"><a class="header" href="#为什么选择rust">为什么选择Rust</a></h2>
+<p>Rust是一门现代化的系统编程语言，它提供了内存安全性、并发安全性和高性能等特点。在这里，我将分享我的Rust学习之路。</p>
+<h2 id="学习心得"><a class="header" href="#学习心得">学习心得</a></h2>
+<h3 id="所有权系统"><a class="header" href="#所有权系统">所有权系统</a></h3>
+<p>Rust最独特的特性就是其所有权系统：</p>
+<ul>
+<li>每个值都有一个所有者</li>
+<li>同一时刻只能有一个所有者</li>
+<li>当所有者离开作用域，值将被丢弃</li>
+</ul>
+<h3 id="错误处理"><a class="header" href="#错误处理">错误处理</a></h3>
+<p>Rust的错误处理机制非常优雅：</p>
+<ul>
+<li>Result类型用于可恢复错误</li>
+<li>panic!用于不可恢复错误</li>
+<li>？运算符简化错误传播</li>
+</ul>
+<h2 id="实践项目"><a class="header" href="#实践项目">实践项目</a></h2>
+<h3 id="web服务器"><a class="header" href="#web服务器">Web服务器</a></h3>
+<p>使用Rust构建高性能Web服务器的经验：</p>
+<ul>
+<li>使用actix-web框架</li>
+<li>异步编程实践</li>
+<li>性能优化技巧</li>
+</ul>
+<h3 id="命令行工具"><a class="header" href="#命令行工具">命令行工具</a></h3>
+<p>开发命令行工具的心得：</p>
+<ul>
+<li>clap库的使用</li>
+<li>文件处理</li>
+<li>跨平台兼容性</li>
+</ul>
+<h2 id="学习资源"><a class="header" href="#学习资源">学习资源</a></h2>
+<p>推荐一些优质的Rust学习资源：</p>
+<ul>
+<li><a href="https://doc.rust-lang.org/book/">Rust程序设计语言</a></li>
+<li><a href="https://doc.rust-lang.org/rust-by-example/">Rust by Example</a></li>
+<li><a href="https://doc.rust-lang.org/std/">Rust标准库文档</a></li>
+</ul>
+<p>持续更新中...</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="web开发-1"><a class="header" href="#web开发-1">Web开发</a></h1>
+<h2 id="现代web开发技术栈"><a class="header" href="#现代web开发技术栈">现代Web开发技术栈</a></h2>
+<p>在当今的Web开发领域，掌握全栈技术是非常重要的。以下是我在Web开发过程中的一些心得体会。</p>
+<h2 id="前端开发"><a class="header" href="#前端开发">前端开发</a></h2>
+<h3 id="框架选择"><a class="header" href="#框架选择">框架选择</a></h3>
+<p>现代前端框架各有特色：</p>
+<ul>
+<li>React：组件化开发，生态丰富</li>
+<li>Vue：易学易用，渐进式框架</li>
+<li>Svelte：编译时框架，性能出色</li>
+</ul>
+<h3 id="开发实践"><a class="header" href="#开发实践">开发实践</a></h3>
+<p>前端开发的最佳实践：</p>
+<ul>
+<li>组件设计原则</li>
+<li>状态管理策略</li>
+<li>性能优化技巧</li>
+</ul>
+<h2 id="后端开发"><a class="header" href="#后端开发">后端开发</a></h2>
+<h3 id="rust-web框架"><a class="header" href="#rust-web框架">Rust Web框架</a></h3>
+<p>使用Rust进行后端开发的经验：</p>
+<ul>
+<li>Actix-web：高性能异步框架</li>
+<li>Rocket：简单易用，类似Rails</li>
+<li>Warp：基于Tower的轻量级框架</li>
+</ul>
+<h3 id="api设计"><a class="header" href="#api设计">API设计</a></h3>
+<p>RESTful API设计原则：</p>
+<ul>
+<li>资源命名规范</li>
+<li>状态码使用</li>
+<li>错误处理机制</li>
+</ul>
+<h2 id="全栈开发"><a class="header" href="#全栈开发">全栈开发</a></h2>
+<h3 id="项目架构"><a class="header" href="#项目架构">项目架构</a></h3>
+<p>全栈应用的架构设计：</p>
+<ul>
+<li>前后端分离</li>
+<li>微服务架构</li>
+<li>数据库选择</li>
+</ul>
+<h3 id="部署运维"><a class="header" href="#部署运维">部署运维</a></h3>
+<p>项目部署和维护：</p>
+<ul>
+<li>Docker容器化</li>
+<li>CI/CD流程</li>
+<li>监控告警</li>
+</ul>
+<h2 id="学习资源-1"><a class="header" href="#学习资源-1">学习资源</a></h2>
+<p>推荐的Web开发学习资源：</p>
+<ul>
+<li><a href="https://developer.mozilla.org/">MDN Web文档</a></li>
+<li><a href="https://rust-lang.github.io/async-book/">Rust Web编程</a></li>
+<li><a href="https://roadmap.sh/">Web开发路线图</a></li>
+</ul>
+<p>持续更新中...</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="生活随笔"><a class="header" href="#生活随笔">生活随笔</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="读书笔记"><a class="header" href="#读书笔记">读书笔记</a></h1>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="旅行日记"><a class="header" href="#旅行日记">旅行日记</a></h1>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+        <!-- Livereload script (if served using the cli tool) -->
+        <script>
+            const wsProtocol = location.protocol === 'https:' ? 'wss:' : 'ws:';
+            const wsAddress = wsProtocol + "//" + location.host + "/" + "__livereload";
+            const socket = new WebSocket(wsAddress);
+            socket.onmessage = function (event) {
+                if (event.data === "reload") {
+                    socket.close();
+                    location.reload();
+                }
+            };
+
+            window.onbeforeunload = function() {
+                socket.close();
+            }
+        </script>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </div>
+    </body>
+</html>
